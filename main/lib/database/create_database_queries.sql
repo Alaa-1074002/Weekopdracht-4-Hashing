@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Organisatie (
-  id integer PRIMARY KEY AUTOINCREMENT,
+  "id" integer PRIMARY KEY AUTOINCREMENT,
   "naam" varchar,
   "type" varchar,
   "website" varchar,
@@ -102,9 +102,9 @@ INSERT INTO Beperking ('beperking', 'type_beperking') VALUES ('Doof','Auditieve 
 ('ADHD','Cognitieve / Neurologische Beperkingen'),('Autisme','Cognitieve / Neurologische Beperkingen'),('Leerstoornis','Cognitieve / Neurologische Beperkingen'),
 ('Geheugen beperking','Cognitieve / Neurologische Beperkingen'),('Epilepsie','Cognitieve / Neurologische Beperkingen'),('Migraine','Cognitieve / Neurologische Beperkingen');
 
-INSERT INTO Beheerder ('gebruikersnaam','wachtwoord','voornaam','achternaam','team','is_admin') VALUES ('admin','admin','admin','admin','admin','1');
+INSERT INTO Beheerder ('gebruikersnaam','wachtwoord','voornaam','achternaam','team','is_admin') VALUES ('admin','$2b$12$8EWHn3yGyWuZAmDZ/1yWiOnh2ikAOb3qqjNB7yZbMoZKqCXYawk6m','admin','admin','admin','1');
 
-INSERT INTO Organisatie ('naam', 'type', 'website', 'beschrijving', 'contactpersoon', 'email', 'telefoonnummer', 'overige_details') VALUES ('Organisatie1', 'Organisatie', 'www.Organisatie1.nl', 'Organisatie1 is een organisatie', 'contactpersoon Organisatie1', 'Organisatie1@gmail.com', 0612345678, 'Organisatie1 details');
+INSERT INTO Organisatie ('naam', 'type', 'website', 'beschrijving', 'contactpersoon', 'email', 'telefoonnummer', 'overige_details') VALUES ('Organisatie1', 'Organisatie', 'www.Organisatie1.nl', 'Organisatie1 is een organisatie', 'contactpersoon Organisatie1', 'Organisatie1@gmail.com', "0612345678", 'Organisatie1 details');
 
 INSERT INTO Onderzoek ('titel', 'beschikbaar', 'beschrijving', 'datum_vanaf', 'datum_tot', 'type_onderzoek', 'locatie', 'met_beloning', 'beloning', 'doelgroep_leeftijd_van', 'doelgroep_leeftijd_tot', 'doelgroep_beperking', 'organisatie_id', 'status', 'datum_status_update', 'beheerder_id') VALUES ('Onderzoek voor doven', 1, 'Onderzoek voor doven', '2024-03-10', '2024-06-10', 'telephone', 'Rotterdam', 1, null, 0, 99, 1, 1, 'goedgekeurd', null, null),
 ('Onderzoek voor slechthorenden', 1, 'Onderzoek voor slechthorenden', '2024-03-10', '2024-06-10', 'telephone', 'Rotterdam', 1, null, 0, 99, 2, 1, 'goedgekeurd', null, null),

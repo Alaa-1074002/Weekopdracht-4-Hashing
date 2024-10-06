@@ -3,6 +3,7 @@ import sqlite3
 import os
 import datetime
 from validate import is_een_geldige_kandidaat
+from helper.hash import hash_password, verify_password
 current_directory = os.path.dirname(os.path.abspath(__file__))
 database_path = os.path.join(current_directory, 'lib\database', 'database.db')
 
@@ -20,7 +21,7 @@ def insert_ervaringsdeskundige_into_database(form, beperkingen):
     geslacht = form.get('sex')
     email = form.get('email')
     gebruikersnaam = form.get('username')
-    wachtwoord = form.get('password')
+    wachtwoord = hash_password(form.get('password'))
     telefoonnummer = form.get('phonenumber')
     geboortedatum = form.get('birthdate')
     gebruikte_hulpmiddel = form.get('used_accessory')
@@ -118,7 +119,7 @@ def beheerder_login(form):
     cursor.execute(query, (name,))
     user_data = cursor.fetchone()
     cursor.close()
-    if(user_data[0] == wachtwoord):
+    if(verify_password(user_data[0],wachtwoord)):
         return True
     else: return False
 
@@ -451,16 +452,13 @@ def create_beheerder():
 
 
 
-def user_exist(gebruikersnaam,password):     
+def user_exist(gebruikersnaam):     
     connection = get_db()
     cursor = connection.cursor()
-    cursor.execute("""SELECT * FROM Ervaringsdeskundige WHERE gebruikersnaam = ? and wachtwoord = ? """, (gebruikersnaam,password,) )
+    cursor.execute("""SELECT * FROM Ervaringsdeskundige WHERE gebruikersnaam = ?""", (gebruikersnaam,) )
     result = cursor.fetchone()
-    if result is None:
-        return False
-    else: 
-        return True
-
+    return dict(result) if not None else {}
+    
 # def get_beperking_by_id(id):
 
 def get_evd_beperkinging(id): 

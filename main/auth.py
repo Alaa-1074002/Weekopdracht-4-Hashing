@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, session, request
 from database_functions import *
-
+from helper.hash import hash_password, verify_password
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -62,7 +62,7 @@ def login_beheerder():
             cursor.execute(query, (name,))
             user_data = cursor.fetchone()
 
-            if user_data is None or user_data['wachtwoord'] != password:
+            if user_data is None or verify_password(user_data['wachtwoord'],password) != True:
                 flash('Foutieve gebruikersnaam/wachtwoord')
                 return render_template('login_beheerder.html')
             else:
@@ -118,7 +118,9 @@ def login_evd():
 def login_evd_new(): 
      gebruikersnaam = request.form['gebruikersnaamEvd']  if request.form is not None and   request.form['gebruikersnaamEvd'] is not None  else  request.json['gebruikersnaamEvd'] if request.json  is not None and request.json['gebruikersnaamEvd']  is not None else None
      wachtwoordEvd = request.form['wachtwoordEvd']  if request.form is not None and  request.form['wachtwoordEvd'] is not None  else  request.json['wachtwoordEvd'] if request.json  is not None and request.json['wachtwoordEvd']  is not None else None
-     if user_exist(gebruikersnaam,  wachtwoordEvd):
+     user = user_exist(gebruikersnaam)
+     
+     if verify_password(user["wachtwoord"],  wachtwoordEvd):
       evd = get_evd_by_username(gebruikersnaam)
       # problem with the database please hash the password
       if evd['status'] == 'nieuw':
