@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block head %}
+<link href="/static/css/register.css" rel="stylesheet">
+<script src="/static/javascript/javascript.js"></script>
+{% endblock %}
+{% block content %}
+
+    <style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 2px solid black;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+</style>
+
+<h1 class="row justify-content-center">Bekijk alle inschrijvingen op onderzoeken</h1>
+<div class="container mt-5">
+  <div class="row justify-content-left">
+    <div class="col-sm-1">
+      <a href="{{ url_for('beheerder.beheerder') }}" class="btn btn-primary mb-3">Terug</a>
+    </div>
+      <div class="col-sm-8"><input class="form-control margin_bottom" id="myInput" type="text"
+                                     placeholder="zoeken..."></div>
+  </div>
+</div>
+  <div class="container mt-5">
+    <table id="evd-table" border="1">
+      <thead>
+        <tr>
+    <th style="width: 150px;">Naam</th>
+    <th style="width: 150px;">Achternaam</th>
+    <th style="width: 200px;">Onderzoek</th>
+    <th style="width: 150px;">Type onderzoek</th>
+    <th style="width: 100px;">Met beloning</th>
+    <th style="width: 175px;">Datum Inschrijving</th>
+    <th style="width:  75px;">Status</th>
+    <th style="width: 200px;">Bekijk</th>
+            <th style="width: 200px;">Actie</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alle_inschrijvingen in alle_inschrijvingen %}
+        <tr>
+          <td>{{ alle_inschrijvingen['voornaam'] }}</td>
+          <td>{{ alle_inschrijvingen['achternaam'] }}</td>
+          <td>{{ alle_inschrijvingen['titel'] }}</td>
+          <td>{{ alle_inschrijvingen['type_onderzoek'] }}</td>
+          <td>{{ alle_inschrijvingen['met_beloniong'] }}</td>
+          <td>{{ alle_inschrijvingen['Datum_laatste_status_update'] }}</td>
+          <td>{{ alle_inschrijvingen['status'] }}</td>
+          <td>
+              <form method="post" action="{{ url_for('beheerder.view_evd', evd_id=alle_inschrijvingen['id']) }}">
+                <input type="submit" value="Bekijk ervaringsdeskundige">
+            </form>
+              <form method="post" action="{{ url_for('beheerder.view_onderzoek', onderzoek_id=alle_inschrijvingen['id']) }}">
+                <input type="submit" value="Bekijk Onderzoek">
+            </form>
+          </td>
+            {% if alle_inschrijvingen['status'] == 'nieuw' or alle_inschrijvingen['status'] == 'afgekeurd'%}
+        <td>
+            <form method="post" action="{{ url_for('beheerder.confirm_inschrijving_no_redirect', onderzoek_id = alle_inschrijvingen['onderzoek_id']) }}">
+                <input type="submit" value="Goedkeuren">
+            </form>
+        </td>
+            {% endif %}
+        {% if alle_inschrijvingen['status'] == 'nieuw' or alle_inschrijvingen['status'] == 'goedgekeurd'%}
+            <td>
+            <form method="post" action="{{ url_for('beheerder.deny_inschrijving_no_redirect', onderzoek_id = alle_inschrijvingen['onderzoek_id']) }}">
+                <input type="submit" value="Afkeuren">
+            </form>
+        </td>
+        {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
